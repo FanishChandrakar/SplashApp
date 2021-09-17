@@ -6,13 +6,13 @@
  * @flow
  */
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import App from './src';
 
 export default () => {
   return (
     <>
-      <App/>
+      <App />
     </>
   );
 };

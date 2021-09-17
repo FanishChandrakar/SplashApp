@@ -16,6 +16,8 @@ import {
     StatusBar,
     AppState,
     TouchableOpacity,
+    Image,
+    Dimensions,
 } from 'react-native';
 
 import {
@@ -27,6 +29,7 @@ import {
 } from 'react-native/Libraries/NewAppScreen';
 import SplashScreen from 'react-native-splash-screen';
 
+const { width, height } = Dimensions.get('window')
 export default (props) => {
 
     const [appState, setAppState] = useState(AppState.currentState);
@@ -42,10 +45,12 @@ export default (props) => {
 
     const _handleAppStateChange = nextAppState => {
         setAppState(nextAppState);
-        if (nextAppState === 'active')
-            return SplashScreen.hide()
 
-        SplashScreen.show()
+        // Splash Screen Toggle when AppState Changes
+        // if (nextAppState === 'active')
+        //     return SplashScreen.hide()
+
+        // SplashScreen.show()
     };
 
     const _toggleSplash = () => {
@@ -60,6 +65,17 @@ export default (props) => {
             <TouchableOpacity {...{ style }} onPress={_toggleSplash}>
                 <Text style={styles.appStateUI_Text}>{appState}</Text>
             </TouchableOpacity>
+        )
+    }
+
+    // Custom UI for AppState as Background/Inactive
+    const InactiveUI = () => {
+        if (appState === 'active')
+            return null
+        return (
+            <View style={styles.inactiveUI_View}>
+                <Image source={require('./react_logo.png')} style={styles.inactiveUI_Image} />
+            </View>
         )
     }
 
@@ -108,6 +124,7 @@ export default (props) => {
                     </View>
                 </ScrollView>
             </SafeAreaView>
+            <InactiveUI />
         </>
     );
 };
@@ -151,14 +168,24 @@ const styles = StyleSheet.create({
     },
     appStateUI_inactive: {
         backgroundColor: '#ff0000',
-        padding: 10
+        padding: 10,
     },
     appStateUI_active: {
         backgroundColor: '#00ff00',
-        padding: 10
+        padding: 10,
     },
     appStateUI_Text: {
         color: '#fff',
-        textAlign: 'center'
+        textAlign: 'center',
     },
+    inactiveUI_View: {
+        ...StyleSheet.absoluteFill,
+        backgroundColor: '#212329',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    inactiveUI_Image: {
+        height: width / 2.5,
+        width: width / 2.5,
+    }
 });
